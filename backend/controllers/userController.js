@@ -55,7 +55,17 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
     // });
 });
 
+//get user details
 
+exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
+    const user = await User.findById(req.user.id);
+
+    // sendToken(user,200,res); 
+    res.status(200).json({
+        sucess: true,
+        user,
+    });
+});
 
 
 // logout user

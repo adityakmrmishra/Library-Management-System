@@ -1,4 +1,5 @@
 const Book = require('../models/bookModel');
+const IssuedBook = require('../models/issuedBookModel')
 const ErrorHandler = require('../utils/errorhandler');
 const catchAsyncErrors = require('../middleware/catchAsyncErrors');
 
@@ -47,6 +48,7 @@ exports.getBookById = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
+
 // Update a book by ID
 exports.updateBook = catchAsyncErrors(async (req, res, next) => {
     const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {
@@ -78,5 +80,50 @@ exports.deleteBook = catchAsyncErrors(async (req, res, next) => {
     res.status(200).json({
         success: true,
         message: 'Book deleted successfully',
+    });
+});
+
+
+
+// Issue a book
+exports.issueBook = catchAsyncErrors(async (req, res, next) => {
+    const book = await Book.findById(req.params.id);
+
+    if (!book) {
+        return next(new ErrorHandler(`Book not found with id: ${req.params.id}`, 404));
+    }
+
+    if (!book.available) {
+        return next(new ErrorHandler('Book is not available for issuance', 400));
+    }
+
+    // Set the book as unavailable
+    // book.available = false; 
+    await book.save();
+
+    // Create an entry in the IssuedBook model
+    const issuedBook = new IssuedBook({
+        email: req.email,
+        bookId: book.id,
+        issueDate: new Date(),
+    });
+
+    await issuedBook.save();
+
+    res.status(200).json({
+        success: true,
+        message: 'Book issued successfully',
+    });
+});
+
+// Get issued books by user ID
+exports.getIssuedBooks = catchAsyncErrors(async (req, res, next) => {
+    const userId = req.params.id;
+
+    const issuedBooks = await IssuedBook.find({ userId }).populate('bookId');
+
+    res.status(200).json({
+        success: true,
+        issuedBooks,
     });
 });

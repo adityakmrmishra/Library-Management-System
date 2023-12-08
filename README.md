@@ -1,4 +1,7 @@
-﻿# Library-Management-System
+﻿# Library-Management-System 
+
+## Made using MERN 
+ 
 ### Admin Details for test
   - email - lucifer@gmail.com
   - password - 123456789

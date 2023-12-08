@@ -11,6 +11,9 @@ import AddBookPage from './component/Admin/AddBookPage.jsx';
 import UpdateBookPage from './component/Admin/UpdateBookPage.jsx';
 import AllUsersPage from './component/Admin/AllUsersPage.jsx';
 import AllBooksPage from './component/Admin/AllBooksPage.jsx';
+import IssueBookPage from './component/Home/IssueBookPage.jsx';
+import AllIssueBookPage from './component/Home/IssueList.jsx';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
@@ -26,7 +29,10 @@ function App() {
         <Route path="/admin/update-book/:bookId" element={<UpdateBookPage />} />
         <Route path="/admin/all-users" element={<AllUsersPage />} />
         <Route path="/admin/all-books" element={<AllBooksPage />} />
+        <Route path="/issue/:bookId" element={<IssueBookPage />} />
+        <Route path="/issue" element={<AllIssueBookPage />} />
       </Routes>
+      <ToastContainer />
     </Router>
   );
 }

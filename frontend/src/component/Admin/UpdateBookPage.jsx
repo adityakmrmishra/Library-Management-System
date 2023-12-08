@@ -54,7 +54,7 @@ const UpdateBookPage = () => {
       });
 
       console.log('Book updated successfully');
-      navigate('/all-books');
+      navigate('/admin/all-books');
     } catch (error) {
       console.error('Error updating book:', error);
     }

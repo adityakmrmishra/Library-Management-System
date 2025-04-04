@@ -5,7 +5,6 @@ import LoginForm from './LoginForm';
 const LoginPage = () => {
     return (
         <div className="w-screen bg-white text-black" >
-            <h1 >Library </h1>
             <LoginForm />
         </div>
     );

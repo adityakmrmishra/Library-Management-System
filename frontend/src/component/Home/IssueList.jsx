@@ -26,8 +26,8 @@ const UserHomePage = () => {
                     id: item.bookId._id,
                     title: item.bookId.title,
                     author: item.bookId.author,
-                    issueDate: item.bookId.issueDate,
-                    returnDate: item.bookId.returnDate,
+                    issueDate: String(item.issueDate).substr(0, 10),
+                    returnDate:String(item.returnDate).substr(0, 10) ,
                     publishedYear: item.bookId.publishedYear,
                     serialNumber: item.bookId.serialNumber,
                     category: item.bookId.category
@@ -55,63 +55,52 @@ const UserHomePage = () => {
 
 
 
-    const returnBookHandler = async (bookId) => {
-        try {
-            const response = await axios.put(`http://localhost:4000/api/books/return/${bookId}`, {}, {
-                withCredentials: true,
-            });
+    // const returnBookHandler = async (bookId) => {
+    //     try {
+    //         const response = await axios.put(`http://localhost:4000/api/books/return/${bookId}`, {}, {
+    //             withCredentials: true,
+    //         });
 
-            if (response.status === 200) {
-                toast.success('Book returned successfully', {
-                    position: 'top-right',
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                });
-                // Update the book list and issued books after returning
-                const updatedBooks = bookList.map((book) =>
-                    book.id === bookId ? { ...book, available: true } : book
-                );
-                setBookList(updatedBooks);
-                const returnedBookId = response.data.returnedBookId;
-                setIssuedBooks(issuedBooks.filter((book) => book.id !== returnedBookId));
-            } else {
-                toast.error('Book return failed. Please try again.', {
-                    position: 'top-right',
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                });
-            }
-        } catch (error) {
-            console.log(error);
-            toast.error(error.response.data.message, {
-                position: 'top-right',
-                autoClose: 3000,
-                hideProgressBar: false,
-            });
-        }
-    };
+    //         if (response.status === 200) {
+    //             toast.success('Book returned successfully', {
+    //                 position: 'top-right',
+    //                 autoClose: 3000,
+    //                 hideProgressBar: false,
+    //             });
+    //             // Update the book list and issued books after returning
+    //             const updatedBooks = bookList.map((book) =>
+    //                 book.id === bookId ? { ...book, available: true } : book
+    //             );
+    //             setBookList(updatedBooks);
+    //             const returnedBookId = response.data.returnedBookId;
+    //             setIssuedBooks(issuedBooks.filter((book) => book.id !== returnedBookId));
+    //         } else {
+    //             toast.error('Book return failed. Please try again.', {
+    //                 position: 'top-right',
+    //                 autoClose: 3000,
+    //                 hideProgressBar: false,
+    //             });
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //         toast.error(error.response.data.message, {
+    //             position: 'top-right',
+    //             autoClose: 3000,
+    //             hideProgressBar: false,
+    //         });
+    //     }
+    // };
 
     const columns = [
         { field: 'id', headerName: 'Book ID', minWidth: 150, flex: 0.5 },
+        { field: 'issueDate', headerName: 'IssueDate', minWidth: 150, flex: 0.5 },
+        { field: 'returnDate', headerName: 'ReturnDate', minWidth: 150, flex: 0.5 },
         { field: 'title', headerName: 'Title', minWidth: 200, flex: 0.5 },
         { field: 'author', headerName: 'Author', minWidth: 150, flex: 0.3 },
         { field: 'publishedYear', headerName: 'PublishedYear', minWidth: 150, flex: 0.3 },
         { field: 'serialNumber', headerName: 'SerialNumber', minWidth: 150, flex: 0.3 },
         { field: 'category', headerName: 'Category', minWidth: 150, flex: 0.3 },
-        {
-            field: 'actions',
-            flex: 0.3,
-            headerName: 'Actions',
-            minWidth: 150,
-            sortable: false,
-            renderCell: (params) => (
-                <Fragment>
-                    <Link to={`/issue/${params.getValue(params.id, 'id')}`}>
-                        <h1 className="text-sm p-2 border">return</h1>
-                    </Link>
-                </Fragment>
-            ),
-        },
+
     ];
 
     return (

@@ -18,6 +18,12 @@ const issuedBookSchema = new mongoose.Schema({
     },
     returnDate: {
         type: Date,
+        default: function() {
+            const issueDate = this.issueDate || Date.now();
+            const returnDate = new Date(issueDate);
+            returnDate.setDate(returnDate.getDate() + 10);
+            return returnDate;
+        },
     },
 });
 
